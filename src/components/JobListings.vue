@@ -1,12 +1,20 @@
 <script setup>
 import JobListing from "@/components/JobListing.vue";
-import JobData from "@/jobs copy.json";
-import {ref, defineProps} from 'vue';
+import {ref, defineProps, onMounted} from 'vue';
 import { RouterLink } from "vue-router";
+import axios from 'axios'
 
 //pour recupere les donnee de json
-const jobs = ref(JobData);
+const jobs = ref([]);
 //console.log(jobs.value);
+onMounted(async()=>{
+    try{
+        const response = await axios.get('http://localhost:8000/jobs');
+        jobs.value = response.data;
+    }catch(error){
+        console.error("Error fetching jobs:", error);
+    }
+});
 
 //pour afficher un nb limite
 defineProps({
